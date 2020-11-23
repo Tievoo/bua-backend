@@ -38,8 +38,19 @@ app.post('/upload', async (req, res) => {
     console.log("ANS",ans)
     res.json({
         object: obj,
-        porcentaje: prc
+        porcentaje: prc,
+        id: newId
     })
+})
+
+app.post('/confirm', async (req,res)=>{
+    ref.child(`${req.body.id}`).set({
+        userSaid: req.body.ans
+    }, (err)=>{
+        if(err) return res.json(err)
+        else return res.status(400).json('Todo bien')
+    })
+    
 })
 
 app.listen(port, () => {
