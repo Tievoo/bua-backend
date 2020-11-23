@@ -18,7 +18,9 @@ ref.on('value', (a,b)=>{
     actualDb = a.val()
 })
 
-app.get('/upload', async (req, res) => {
+app.post('/upload', async (req, res) => {
+    console.log("asasdfasd")
+    // console.log(req.body.img)
     var img = req.body.img ? Buffer.from(req.body.img, 'base64') : 'dou'
     var [obj, prc] = await getObjfromPic(img)
     var newId = random10Dig();
@@ -30,9 +32,10 @@ app.get('/upload', async (req, res) => {
         porcentaje: prc,
         yes: 0,
         no: 0,
-        url: req.body.url
+        url: "si"
     })
     var ans = `Se encontró un/a ${obj} en la imagen, con un ${prc}% de confianza`
+    console.log("ANS",ans)
     res.json({
         object: obj,
         porcentaje: prc
