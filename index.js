@@ -12,7 +12,10 @@ admin.initializeApp({
 });
 const ref = admin.database().ref('objectEntries/')
 
-app.use(express.json());
+
+var bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 ref.on('value', (a,b)=>{  
     actualDb = a.val()
@@ -30,10 +33,7 @@ app.post('/upload', async (req, res) => {
     var img = req.body.img ? Buffer.from(req.body.img, 'base64') : 'dou'
     var [obj, prc] = await getObjfromPic(img)
     var user = req.body.username ? req.body.username : "Guest"
-    var newId = random10Dig();
-    while(Object.keys(actualDb).includes(newId)){
-        newId = random10Dig();
-    }
+    var newId = req.body.id
     ref.child(`${newId}`).set({
         object: obj,
         porcentaje: prc,
