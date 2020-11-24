@@ -19,8 +19,14 @@ ref.on('value', (a,b)=>{
 })
 
 app.post('/upload', async (req, res) => {
-    console.log("asasdfasd")
-    // console.log(req.body.img)
+    /*
+    Esta request espera:
+    {
+        img: "base64string/binaryImage",
+        url: "firebase.bnla.bla./aplsapdas"
+        username: "algo" //si no hay, pone "Guest"
+    }
+    */
     var img = req.body.img ? Buffer.from(req.body.img, 'base64') : 'dou'
     var [obj, prc] = await getObjfromPic(img)
     var user = req.body.username ? req.body.username : "Guest"
@@ -46,6 +52,13 @@ app.post('/upload', async (req, res) => {
 })
 
 app.post('/confirm', async (req,res)=>{
+    /*
+        Esta request espera:
+        {
+            id: "Te la envíe antes en la res del otro POST, es un numero de 10 digitos",
+            ans: true/false //si el usuairo dijo que el algoritmo le pego o no
+        }
+    */
     ref.child(`${req.body.id}`).set({
         userSaid: req.body.ans
     }, (err)=>{
